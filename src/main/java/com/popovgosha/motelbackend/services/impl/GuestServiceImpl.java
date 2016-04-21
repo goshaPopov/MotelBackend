@@ -37,4 +37,12 @@ public class GuestServiceImpl implements GuestService{
         guestRepository.delete(id);
     }
 
+    @Override
+    public Boolean isFreePassportSeriesNumber(String passport) {
+        if (guestRepository.checkPassportSeriesNumber(passport) == null){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

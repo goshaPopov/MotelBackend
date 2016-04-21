@@ -12,8 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Georgiy Popov on 20.04.2016.
@@ -25,7 +27,7 @@ public class Room implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "number", unique = true)
     private Integer number;
@@ -41,6 +43,10 @@ public class Room implements Serializable{
     @JoinColumn(name = "id_room_type", nullable = false)
     private RoomType roomType;
 
+    @JsonIgnore
+    @OneToMany( mappedBy = "room", fetch = FetchType.LAZY)
+    private List<RoomAccounting> roomAccountings;
+
     public Room() {
     }
 
@@ -51,11 +57,11 @@ public class Room implements Serializable{
         this.roomType = roomType;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -89,6 +95,14 @@ public class Room implements Serializable{
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
+    }
+
+    public List<RoomAccounting> getRoomAccountings() {
+        return roomAccountings;
+    }
+
+    public void setRoomAccountings(List<RoomAccounting> roomAccountings) {
+        this.roomAccountings = roomAccountings;
     }
 
     @Override

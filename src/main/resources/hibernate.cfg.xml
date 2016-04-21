@@ -22,5 +22,8 @@
         <mapping class="com.popovgosha.motelbackend.domain.Guest"/>
         <mapping class="com.popovgosha.motelbackend.domain.Employee"/>
         <mapping class="com.popovgosha.motelbackend.domain.Service"/>
+        <mapping class="com.popovgosha.motelbackend.domain.RoomAccounting"/>
+        <mapping class="com.popovgosha.motelbackend.domain.Check"/>
+        <mapping class="com.popovgosha.motelbackend.domain.ServiceCheck"/>
     </session-factory>
 </hibernate-configuration>

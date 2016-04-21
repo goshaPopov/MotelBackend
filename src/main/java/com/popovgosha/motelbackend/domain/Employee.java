@@ -49,6 +49,10 @@ public class Employee implements Serializable {
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private List<Service> services;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<RoomAccounting> roomAccountings;
+
     public Employee() {
     }
 
@@ -124,6 +128,14 @@ public class Employee implements Serializable {
 
     public void setServices(List<Service> services) {
         this.services = services;
+    }
+
+    public List<RoomAccounting> getRoomAccountings() {
+        return roomAccountings;
+    }
+
+    public void setRoomAccountings(List<RoomAccounting> roomAccountings) {
+        this.roomAccountings = roomAccountings;
     }
 
     @Override

@@ -1,18 +1,22 @@
 package com.popovgosha.motelbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Georgiy Popov on 20.04.2016.
@@ -78,6 +82,10 @@ public class Guest implements Serializable {
 
     @Column(name = "passport_authority", nullable = false, length = 100)
     private String passportAuthority;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY)
+    private List<RoomAccounting> roomAccountings;
 
     public Guest() {
     }
@@ -249,6 +257,14 @@ public class Guest implements Serializable {
 
     public void setPassportAuthority(String passportAuthority) {
         this.passportAuthority = passportAuthority;
+    }
+
+    public List<RoomAccounting> getRoomAccountings() {
+        return roomAccountings;
+    }
+
+    public void setRoomAccountings(List<RoomAccounting> roomAccountings) {
+        this.roomAccountings = roomAccountings;
     }
 
     @Override

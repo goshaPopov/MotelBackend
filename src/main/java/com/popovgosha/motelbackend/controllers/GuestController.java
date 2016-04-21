@@ -4,7 +4,6 @@ import com.popovgosha.motelbackend.domain.Guest;
 import com.popovgosha.motelbackend.services.GuestService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +31,7 @@ public class GuestController {
         log.info("Get all guests...");
         List<Guest> users = guestService.findAll();
         if(users.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -49,9 +48,10 @@ public class GuestController {
 
     @RequestMapping(value = "/guest", method = RequestMethod.POST)
     public ResponseEntity<Guest> newGuest(@RequestBody Guest guest, UriComponentsBuilder ucBuilder){
-//        TODO: Check Unique fields
         log.info("Create new guest...");
-        if (guest != null ){
+        boolean isFreePasport = guestService.isFreePassportSeriesNumber(guest.getPassportData());
+        // Checking Guest(Null or Not Null) and passport data.
+        if ((guest != null) && isFreePasport){
             Guest newGuest = guestService.save(guest);
             return new ResponseEntity<>(newGuest, HttpStatus.OK);
         }
