@@ -36,4 +36,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void delete(Long id) {
         employeeRepository.delete(id);
     }
+
+    @Override
+    public boolean checkPhone(String phone) {
+        if ( employeeRepository.checkPhone(phone) == null){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

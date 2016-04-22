@@ -47,11 +47,11 @@ public class GuestController {
     }
 
     @RequestMapping(value = "/guest", method = RequestMethod.POST)
-    public ResponseEntity<Guest> newGuest(@RequestBody Guest guest, UriComponentsBuilder ucBuilder){
+    public ResponseEntity<Guest> newGuest(@RequestBody Guest guest){
         log.info("Create new guest...");
-        boolean isFreePasport = guestService.isFreePassportSeriesNumber(guest.getPassportData());
+        boolean isFreePassport = guestService.isFreePassportSeriesNumber(guest.getPassportData());
         // Checking Guest(Null or Not Null) and passport data.
-        if ((guest != null) && isFreePasport){
+        if ((guest != null) && isFreePassport){
             Guest newGuest = guestService.save(guest);
             return new ResponseEntity<>(newGuest, HttpStatus.OK);
         }

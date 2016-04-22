@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -41,7 +41,7 @@ public class Guest implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "birth_day")
-    private Date birthDay;
+    private Calendar birthDay;
 
     @Column(name = "citizenship", nullable = false, length = 100)
     private String citizenship;
@@ -78,7 +78,7 @@ public class Guest implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "passport_date", nullable = false)
-    private Date passportDate;
+    private Calendar passportDate;
 
     @Column(name = "passport_authority", nullable = false, length = 100)
     private String passportAuthority;
@@ -91,10 +91,10 @@ public class Guest implements Serializable {
     }
 
     public Guest(String secondName, String firstName, String patronymic,
-                 Date birthDay, String citizenship, String countryResidence,
+                 Calendar birthDay, String citizenship, String countryResidence,
                  String stateResidence, String cityResidence, String streetResidence,
                  String buildingResidence, String appartamentResidence, String countryBirth,
-                 String stateBirth, String cityBirth, String passportData, Date passportDate,
+                 String stateBirth, String cityBirth, String passportData, Calendar passportDate,
                  String passportAuthority) {
         this.secondName = secondName;
         this.firstName = firstName;
@@ -147,11 +147,11 @@ public class Guest implements Serializable {
         this.patronymic = patronymic;
     }
 
-    public Date getBirthDay() {
+    public Calendar getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
+    public void setBirthDay(Calendar birthDay) {
         this.birthDay = birthDay;
     }
 
@@ -243,11 +243,11 @@ public class Guest implements Serializable {
         this.passportData = passportData;
     }
 
-    public Date getPassportDate() {
+    public Calendar getPassportDate() {
         return passportDate;
     }
 
-    public void setPassportDate(Date passportDate) {
+    public void setPassportDate(Calendar passportDate) {
         this.passportDate = passportDate;
     }
 

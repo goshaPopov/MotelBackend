@@ -7,6 +7,6 @@ import com.popovgosha.motelbackend.domain.Guest;
  */
 public interface GuestService extends AbstractService<Guest, Long> {
 
-    Boolean isFreePassportSeriesNumber(String passport);
+    boolean isFreePassportSeriesNumber(String passport);
 
 }

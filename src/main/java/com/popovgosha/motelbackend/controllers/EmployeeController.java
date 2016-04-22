@@ -50,9 +50,10 @@ public class EmployeeController {
 
 //    TODO: Check Unique
     @RequestMapping(value = "/employee", method = RequestMethod.POST)
-    public ResponseEntity<Employee> newEmployee(@RequestBody Employee employee, UriComponentsBuilder ucBuilder){
+    public ResponseEntity<Employee> newEmployee(@RequestBody Employee employee){
         log.info("Create new employee...");
-        if (employee != null){
+        boolean isFreePhone = employeeService.checkPhone(employee.getPhone());
+        if ((employee != null) && isFreePhone ){
             Employee newEmployee = employeeService.save(employee);
             return new ResponseEntity<>(newEmployee, HttpStatus.OK);
         }
