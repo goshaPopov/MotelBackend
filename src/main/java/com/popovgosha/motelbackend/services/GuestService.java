@@ -9,4 +9,6 @@ public interface GuestService extends AbstractService<Guest, Long> {
 
     boolean isFreePassportSeriesNumber(String passport);
 
+    Guest getGuestByPassportNumber(String passportNumber);
+
 }

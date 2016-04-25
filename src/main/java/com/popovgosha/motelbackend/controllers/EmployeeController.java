@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public class EmployeeController {
 
 //    TODO: Check Unique
     @RequestMapping(value = "/employee", method = RequestMethod.POST)
-    public ResponseEntity<Employee> newEmployee(@RequestBody Employee employee){
+    public ResponseEntity<Employee> newEmployee(@Valid @RequestBody Employee employee){
         log.info("Create new employee...");
         boolean isFreePhone = employeeService.checkPhone(employee.getPhone());
         if ((employee != null) && isFreePhone ){
@@ -61,7 +62,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/employee/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id, @RequestBody Employee employee){
+    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id, @Valid @RequestBody Employee employee){
         log.info("Update employee #" + id);
         Employee oldEmployee = employeeService.findOne(id);
         if(oldEmployee == null){

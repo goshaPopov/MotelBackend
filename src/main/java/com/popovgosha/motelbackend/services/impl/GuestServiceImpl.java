@@ -4,8 +4,6 @@ import com.popovgosha.motelbackend.domain.Guest;
 import com.popovgosha.motelbackend.repository.GuestRepository;
 import com.popovgosha.motelbackend.services.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,11 +39,16 @@ public class GuestServiceImpl implements GuestService{
 
     @Override
     public boolean isFreePassportSeriesNumber(String passport) {
-        if (guestRepository.checkPassportSeriesNumber(passport) == null){
+        if (guestRepository.guestByPassportNumber(passport) == null){
             return true;
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Guest getGuestByPassportNumber(String passportNumber) {
+        return guestRepository.guestByPassportNumber(passportNumber);
     }
 
 }

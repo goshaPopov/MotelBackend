@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
+
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -36,6 +37,30 @@ public class GuestController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    /*
+    @RequestMapping(value = "/guest",method = RequestMethod.GET)
+    public ResponseEntity<List<Guest>> guestBySFP(
+            @RequestParam("secondName") String secondName,
+            @RequestParam("firstName") String firstName,
+            @RequestParam("patronymic") String patronymic){
+
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    @RequestMapping(value = "/guest", method = RequestMethod.GET)
+    public ResponseEntity<Guest> guestByPassportSeries(
+            @RequestParam("passportNumber") String passportNumber){
+        Guest guest = guestService.getGuestByPassportNumber(passportNumber);
+        if (guest != null){
+            return new ResponseEntity<>(guest, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    */
+
     @RequestMapping(value = "/guest/{id}",method = RequestMethod.GET)
     public ResponseEntity<Guest> getGuest(@PathVariable("id") Long id){
         log.info("Get guest #" + id);
@@ -47,11 +72,11 @@ public class GuestController {
     }
 
     @RequestMapping(value = "/guest", method = RequestMethod.POST)
-    public ResponseEntity<Guest> newGuest(@RequestBody Guest guest){
-        log.info("Create new guest...");
+    public ResponseEntity<Guest> newGuest(@Valid @RequestBody Guest guest){
+        log.info("Create new guest..." + guest.toString());
         boolean isFreePassport = guestService.isFreePassportSeriesNumber(guest.getPassportData());
         // Checking Guest(Null or Not Null) and passport data.
-        if ((guest != null) && isFreePassport){
+        if (isFreePassport ){
             Guest newGuest = guestService.save(guest);
             return new ResponseEntity<>(newGuest, HttpStatus.OK);
         }
@@ -60,14 +85,15 @@ public class GuestController {
 
 
     @RequestMapping(value = "/guest/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Guest> updateGuest(@PathVariable("id") Long id,@RequestBody Guest guest){
+    public ResponseEntity<Guest> updateGuest(@PathVariable("id") Long id,@Valid @RequestBody Guest guest){
         log.info("Update guest #" + id);
         Guest guestOld = guestService.findOne(id);
-        if(guestOld == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        boolean isFreePassport = guestService.isFreePassportSeriesNumber(guest.getPassportData());
+        if((guestOld != null) && isFreePassport){
+            guestService.save(guest);
+            return new ResponseEntity<>(guest, HttpStatus.OK);
         }
-        guestService.save(guest);
-        return new ResponseEntity<>(guest, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @RequestMapping(value = "/guest/{id}", method = RequestMethod.DELETE)
@@ -78,7 +104,7 @@ public class GuestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         guestService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

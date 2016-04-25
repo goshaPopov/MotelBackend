@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface GuestRepository extends JpaRepository<Guest, Long> {
 
     @Query(value = "SELECT * FROM guest WHERE passport_series_number = ?1",nativeQuery = true)
-    Guest checkPassportSeriesNumber(String passport);
+    Guest guestByPassportNumber(String passport);
 
 
 }
