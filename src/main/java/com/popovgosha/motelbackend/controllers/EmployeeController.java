@@ -43,10 +43,10 @@ public class EmployeeController {
     public ResponseEntity<Employee> getEmployee(@PathVariable("id") Long id){
         log.info("Get employee #" + id);
         Employee employee = employeeService.findOne(id);
-        if (employee == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (employee != null) {
+            return new ResponseEntity<>(employee, HttpStatus.OK);
         }
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 //    TODO: Check Unique

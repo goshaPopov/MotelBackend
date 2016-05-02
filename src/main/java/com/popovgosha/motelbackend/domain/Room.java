@@ -38,7 +38,6 @@ public class Room implements Serializable{
     @Column(name = "view", length = 45)
     private String view;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_room_type", nullable = false)
     private RoomType roomType;

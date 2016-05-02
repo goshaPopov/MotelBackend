@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,29 +34,28 @@ public class RoomAccounting implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "entry_date", nullable = false)
     private Date entryDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "exit_date", nullable = false)
     private Date exitDate;
 
-    @Column(name = "reservation", length = 1)
-    private Boolean reservation;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 1)
+    private StatusRoom status;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_room", nullable = false)
     private Room room;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_guest", nullable = false)
     private Guest guest;
 
@@ -65,11 +66,11 @@ public class RoomAccounting implements Serializable {
     public RoomAccounting() {
     }
 
-    public RoomAccounting(Date entryDate, Date exitDate, Boolean reservation,
+    public RoomAccounting(Date entryDate, Date exitDate, StatusRoom status,
                           Employee employee, Room room, Guest guest) {
         this.entryDate = entryDate;
         this.exitDate = exitDate;
-        this.reservation = reservation;
+        this.status = status;
         this.employee = employee;
         this.room = room;
         this.guest = guest;
@@ -99,12 +100,12 @@ public class RoomAccounting implements Serializable {
         this.exitDate = exitDate;
     }
 
-    public Boolean getReservation() {
-        return reservation;
+    public StatusRoom getStatus() {
+        return status;
     }
 
-    public void setReservation(Boolean reservation) {
-        this.reservation = reservation;
+    public void setStatus(StatusRoom status) {
+        this.status = status;
     }
 
     public Employee getEmployee() {

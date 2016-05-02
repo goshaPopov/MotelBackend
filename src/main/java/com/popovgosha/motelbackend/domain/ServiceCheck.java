@@ -28,7 +28,7 @@ public class ServiceCheck implements Serializable {
     private Service service;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_mark")
     private Long idMark;
 

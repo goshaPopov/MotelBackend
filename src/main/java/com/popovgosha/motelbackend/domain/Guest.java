@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,17 +32,11 @@ public class Guest implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "second_name", nullable = false, length = 50)
-    private String secondName;
-
-    @Column(name = "first_name", nullable = false, length = 50)
-    private String firstName;
-
-    @Column(name = "patronymic", nullable = false, length = 50)
-    private String patronymic;
+    @Column(name = "full_name", nullable = false, length = 150)
+    private String fullName;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "birth_day")
+    @Column(name = "birth_day", nullable = false)
     private Date birthDay;
 
     @Column(name = "citizenship", nullable = false, length = 100)
@@ -91,15 +86,13 @@ public class Guest implements Serializable {
     public Guest() {
     }
 
-    public Guest(String secondName, String firstName, String patronymic,
+    public Guest(String fullName,
                  Date birthDay, String citizenship, String countryResidence,
                  String stateResidence, String cityResidence, String streetResidence,
                  String buildingResidence, String appartamentResidence, String countryBirth,
                  String stateBirth, String cityBirth, String passportData, Date passportDate,
                  String passportAuthority) {
-        this.secondName = secondName;
-        this.firstName = firstName;
-        this.patronymic = patronymic;
+        this.fullName = fullName;
         this.birthDay = birthDay;
         this.citizenship = citizenship;
         this.countryResidence = countryResidence;
@@ -124,28 +117,12 @@ public class Guest implements Serializable {
         this.id = id;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public Date getBirthDay() {

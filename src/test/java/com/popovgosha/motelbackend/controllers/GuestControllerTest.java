@@ -58,9 +58,7 @@ public class GuestControllerTest {
 
 //        First fake guest
         guest1 = new Guest();
-        guest1.setSecondName("Popov");
-        guest1.setFirstName("Gosha");
-        guest1.setPatronymic("Dmitrievich");
+        guest1.setFullName("Popov Gosha Dmitrievich");
         guest1.setBirthDay(dateConverter.calendarToDate(new GregorianCalendar(1997, 5, 9)));
         guest1.setCitizenship("RU");
         guest1.setCountryResidence("RU");
@@ -77,9 +75,7 @@ public class GuestControllerTest {
         guest1.setPassportAuthority("SFMS Central region of Orenburg");
 
         guest2 = new Guest();
-        guest2.setSecondName("P");
-        guest2.setFirstName("Gosha");
-        guest2.setPatronymic("Dmitrievich");
+        guest2.setFullName("P Gosha Dmitrievich");
         guest2.setBirthDay(dateConverter.calendarToDate(new GregorianCalendar(1997, 5, 9)));
         guest2.setCitizenship("RU");
         guest2.setCountryResidence("RU");
@@ -106,8 +102,8 @@ public class GuestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].firstName").value("Gosha"))
-                .andExpect(jsonPath("$[1].secondName").value("P"));
+                .andExpect(jsonPath("$[0].passportData").value("5690"))
+                .andExpect(jsonPath("$[1].passportData").value("5691"));
 
         when(guestServiceMock.findAll()).thenReturn(Arrays.asList());
 
@@ -152,7 +148,7 @@ public class GuestControllerTest {
         mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(guest1JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("citizenship").value("RU"));
 
@@ -170,16 +166,6 @@ public class GuestControllerTest {
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest());
 
-
-
-//          Guest2 with null field, not Valid
-        guest2.setPassportDate(null);
-        guest4JSON = mapper.writeValueAsString(guest2);
-
-        mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(guest4JSON)
-                .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isConflict());
 
         verify(guestServiceMock, times(1)).save(anyObject());
 
@@ -203,27 +189,24 @@ public class GuestControllerTest {
         mockMvc.perform(put("/guest/1").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(guest1JSON)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(jsonPath("citizenship").value("RU"));
 
 //        Not free passport
-        mockMvc.perform(put("/guest/2").contentType(MediaType.APPLICATION_JSON_UTF8).content(guest2JSON))
-                .andExpect(status().isConflict());
+        mockMvc.perform(put("/guest/2").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(guest2JSON))
+                .andExpect(status().isNotFound());
 
 //        Not Found
-        mockMvc.perform(put("/guest/3").contentType(MediaType.APPLICATION_JSON_UTF8).content(guest2JSON))
-                .andExpect(status().isConflict());
+        mockMvc.perform(put("/guest/3").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(guest2JSON))
+                .andExpect(status().isNotFound());
 
 //       Null object
-        mockMvc.perform(put("/guest/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(guest3JSON))
+        mockMvc.perform(put("/guest/1").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(guest3JSON))
                 .andExpect(status().isBadRequest());
 
-//      Not valid object
-        guest2.setBirthDay(null);
-        String guest4JSON = mapper.writeValueAsString(guest2);
-        mockMvc.perform(put("/guest/1").contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(guest4JSON))
-                .andExpect(status().isConflict());
 
         verify(guestServiceMock, times(1)).save(anyObject());
     }
@@ -243,4 +226,18 @@ public class GuestControllerTest {
 
         verify(guestServiceMock, times(1)).delete(anyLong());
     }
+
+    @Test
+    public void testSearchByPassportData() throws Exception {
+
+        when(guestServiceMock.searchByPassportData(anyString())).thenReturn(Arrays.asList(guest1,guest2));
+
+        mockMvc.perform(get("/guest/search").param("passportData", "str").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].passportData").value("5690"))
+                .andExpect(jsonPath("$[1].passportData").value("5691"));
+
+    }
+
 }

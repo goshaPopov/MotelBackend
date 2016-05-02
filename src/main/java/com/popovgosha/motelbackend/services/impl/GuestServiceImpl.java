@@ -47,8 +47,8 @@ public class GuestServiceImpl implements GuestService{
     }
 
     @Override
-    public Guest getGuestByPassportNumber(String passportNumber) {
-        return guestRepository.guestByPassportNumber(passportNumber);
+    public List<Guest> searchByPassportData(String passportNumber) {
+        return guestRepository.searchByPassportData(passportNumber);
     }
 
 }

@@ -27,14 +27,8 @@ public class Employee implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "second_name", nullable = false, length = 45)
-    private String secondName;
-
-    @Column(name = "first_name", nullable = false, length = 45)
-    private String firstName;
-
-    @Column(name = "patronymic", nullable = false, length = 45)
-    private String patronymic;
+    @Column(name = "full_name", nullable = false, length = 150)
+    private String fullName;
 
     @Column(name = "position", nullable = false, length = 45)
     private String position;
@@ -56,11 +50,9 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(String secondName, String firstName, String patronymic,
+    public Employee(String fullName,
                     String position, String phone, String password) {
-        this.secondName = secondName;
-        this.firstName = firstName;
-        this.patronymic = patronymic;
+        this.fullName = fullName;
         this.position = position;
         this.phone = phone;
         this.password = password;
@@ -74,28 +66,12 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPosition() {

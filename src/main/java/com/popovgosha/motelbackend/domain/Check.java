@@ -30,7 +30,7 @@ public class Check implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "issued_l", length = 1)
+    @Column(name = "issued_t", length = 1)
     private Boolean issuedB;
 
     @Temporal(TemporalType.TIMESTAMP)
